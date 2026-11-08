@@ -63,8 +63,8 @@ Open a terminal or command prompt on your **host machine** and run the VirtualBo
     vboxmanage modifymedium --compact "/path/to/yourdisk.vdi"
     ```
 
-## QEMU (QNAP Virtualization Station) VM Images
-Look like current status is there is no way to deflate / shrink afterwards older existing VM image size (Virtualization Station v3.x and v4.x).
+## QNAP Virtualization Station VM Images (QEMU)
+Look like current status is there is no practical way to deflate / shrink afterwards older existing VM image size (Virtualization Station v3.x and v4.x).
 - https://community.qnap.com/t/virtualization-station-shrink-img-file-when-deleting-file-from-inside-the-vm/5764 (posted 2026-04-16)
 - https://www.xeve.de/wp/2022/12/shrinking-a-qnap-virtualization-station-disk-image/
 - https://qemu-project.gitlab.io/qemu/tools/qemu-img.html
@@ -83,6 +83,57 @@ Virtualization Station 4.2.0.281
 - Added a VNC console mode for virtual machines with GPU passthrough, so you can keep using the web console when no external monitor is connected.
 
 
+## PROXMOX Images (QEMU/KVM) 
+Under Construction......
+
+- https://www.virtualizationhowto.com/2026/05/why-proxmox-wasnt-reclaiming-storage-until-i-fixed-this-setting/
+- https://www.reddit.com/r/Proxmox/comments/1f59doo/clean_up_your_server_reclaim_disk_space/
+- https://forum.proxmox.com/threads/reclaim-disk-space-in-lxc-raw-images.24801/
+- https://dannyda.com/2020/05/26/how-to-shrink-reclaim-free-virtual-disk-space-from-virtual-machines-on-proxmox-ve-pve-windows-linux-debian-ubuntu-kali-linux-rhel-centos-fedora-etc/
+
+Reclaiming unused disk space from a Proxmox virtual machine (VM) image requires a chain of configuration steps from inside the guest operating system all the way down to the hypervisor and thin-provisioned storage pool. 
+
+----------
+#### Step 1: Enable Discard and SSD Emulation in Proxmox
+
+For the hypervisor to know when space is freed inside the VM, the virtual disk must pass TRIM/UNMAP signals.
+-   Select your VM in the Proxmox web interface.
+-   Go to **Hardware** and double-click your main Hard Disk (do not do this for EFI disks).
+-   Check the boxes for **Discard** and **SSD emulation**.
+-   Ensure your VM's hard disk controller is set to **Virtio-SCSI** (IDE, SATA, and standard Virtio-Block generally do not support passdown as cleanly). Restart the VM if you made controller or hardware changes.
+
+----------
+#### Step 2: Trim Free Space Inside the Guest OS
+
+You must tell the guest operating system to send discard commands for deleted files.
+
+For Linux Guests
+
+-   **Manual trim:** Open the VM terminal and run:
+    
+    *bash*
+    ```
+    sudo fstrim -av
+    ```
+-   **Automatic trim:** Enable the systemd timer so it runs periodically:
+    
+    *bash*
+    ```
+    sudo systemctl enable --now fstrim.timer
+    ```
+----------
+#### Step 3: Verify and Compact Storage Layers
+
+Depending on your storage backend in Proxmox, space reclamation behaves differently:
+
+-   **Thin LVM / ZFS / Ceph:** Once `fstrim` or Windows optimization runs, the free blocks are automatically returned to the pool (note that ZFS or thin-provisioned LVM blocks free up the allocation map, though raw file sizes on non-sparse/fixed setups might require specific handling or a backup/restore cycle if blocks were written sequentially and never unmapped).
+
+-   **QCOW2 / File-based storage:** If you are using raw/qcow2 files on a standard directory and the image file itself won't shrink automatically, the standard method to fully compact a VM image is to:
+    1.  Shut down the VM.
+    2.  Backup the VM.
+    3.  Destroy and restore the VM from the backup, or use `qemu-img convert` to strip out unallocated/zeroed blocks.
+ 
+ 
 ## VMware VMDK Images
 My old VMware ESXi server is nowdays retired and current primary server is QEMU/KVM based PROXMOX (on Debian). 
 - https://en.wikipedia.org/wiki/Proxmox_Virtual_Environment
