@@ -64,10 +64,23 @@ Open a terminal or command prompt on your **host machine** and run the VirtualBo
     ```
 
 ## QEMU (QNAP Virtualization Station) VM Images
-Look like current status in there is no way to deflate / shrink VM image size (Virtualization Station v3.x and v4.x).
+Look like current status is there is no way to deflate / shrink afterwards older existing VM image size (Virtualization Station v3.x and v4.x).
 - https://community.qnap.com/t/virtualization-station-shrink-img-file-when-deleting-file-from-inside-the-vm/5764 (posted 2026-04-16)
 - https://www.xeve.de/wp/2022/12/shrinking-a-qnap-virtualization-station-disk-image/
 - https://qemu-project.gitlab.io/qemu/tools/qemu-img.html
+
+There is Virtualization Station update (see snapshot from release note), which allow new virtual machines to take advantage of disk space reclamation. Feature use require
+- Quest OS support TRIM/UNMAP (most of modern quest OS support this feature: Ubuntu, Debian, Windows 11, ...)
+- "*Enable Space Reclaim*" in Virtual Station VM configuration's "*Storage*" tab
+
+Virtualization Station 4.2.0.281
+2026/08/28
+  
+[New Features]  
+- *Added virtual disk space reclamation to recover unused space and improve storage efficiency*.
+- Added Instant Import, which starts a virtual machine directly from its original disk files with no format conversion, speeding up deployment.  
+- Added machine type selection when creating or editing a virtual machine. New virtual machines use Q35 by default.  
+- Added a VNC console mode for virtual machines with GPU passthrough, so you can keep using the web console when no external monitor is connected.
 
 
 ## VMware VMDK Images
