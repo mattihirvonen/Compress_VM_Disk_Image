@@ -86,6 +86,9 @@ Virtualization Station 4.2.0.281
 ## PROXMOX Images (QEMU/KVM) 
 Under Construction......
 
+PROXMOX default installation use host machine's local ("dedicated") LVM-thin partition for VM virtual disk image files.
+- [Proxmox VE Storage: Thin vs Thick Provisioning Explained | Saturn ME](https://www.saturnme.com/proxmox-ve-storage-thin-vs-thick-provisioning-explained/)
+- [SSD Emulation in Proxmox: What's Actually Changing and How to Leverage TRIM and I/O in Your VMs | Cloud News](https://cloudnews.tech/ssd-emulation-in-proxmox-whats-actually-changing-and-how-to-leverage-trim-and-i-o-in-your-vms/)
 - https://www.virtualizationhowto.com/2026/05/why-proxmox-wasnt-reclaiming-storage-until-i-fixed-this-setting/
 - https://www.reddit.com/r/Proxmox/comments/1f59doo/clean_up_your_server_reclaim_disk_space/
 - https://forum.proxmox.com/threads/reclaim-disk-space-in-lxc-raw-images.24801/
