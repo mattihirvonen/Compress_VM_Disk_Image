@@ -71,7 +71,10 @@ Look like current status is there is no practical way to deflate / shrink afterw
 
 There is Virtualization Station update (see snapshot from release note), which allow new virtual machines to take advantage of disk space reclamation. Feature use require
 - Quest OS support TRIM/UNMAP (most of modern quest OS support this feature: Ubuntu, Debian, Windows 11, ...)
-- "*Enable Space Reclaim*" in Virtual Station VM configuration's "*Storage*" tab
+- Host OS installation (QNAP's file system): Use **LVM partitioning** for virtual machine disk image file storage
+- ***Enable Space Reclaim*** in Virtual Station guest VM configuration's "*Storage*" tab
+- Enable ***Virtio-serial*** in Virtual Station guest VM configuration’s “_Others_” tab for qemu-guest-agent work properly
+- Guest OS installation: Use **LVM** for virtual machine's disk partitioning
 
 Virtualization Station 4.2.0.281
 2026/08/28
@@ -86,7 +89,7 @@ Virtualization Station 4.2.0.281
 ## PROXMOX Images (QEMU/KVM) 
 Under Construction......
 
-PROXMOX default installation use host machine's local ("dedicated") LVM-thin partition for VM virtual disk image files.
+PROXMOX default installation use host machine's local ("dedicated") LVM-thin partition for VM virtual disk images.
 - [Proxmox VE Storage: Thin vs Thick Provisioning Explained | Saturn ME](https://www.saturnme.com/proxmox-ve-storage-thin-vs-thick-provisioning-explained/)
 - [SSD Emulation in Proxmox: What's Actually Changing and How to Leverage TRIM and I/O in Your VMs | Cloud News](https://cloudnews.tech/ssd-emulation-in-proxmox-whats-actually-changing-and-how-to-leverage-trim-and-i-o-in-your-vms/)
 - https://www.virtualizationhowto.com/2026/05/why-proxmox-wasnt-reclaiming-storage-until-i-fixed-this-setting/
