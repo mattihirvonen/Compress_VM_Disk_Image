@@ -5,6 +5,11 @@ This is README project how to compress (deflate / shrink) virtual machine "thin 
 NOTE(s):
 - Virtual machine disk image shall not contain snapshots (which prewent image file compression) !!!
 - Delelete / combine snapshots to one single image file before compress process.
+- Enable guest OS periodic **fstrim.service** (QEMU)
+> - sudo systemctl status fstrim.timer
+> - sudo systemctl enable --now fstrim.timer
+> - sudo systemctl list-timers --all
+
 
 ## VirtualBox VDI Images
 - https://superuser.com/questions/529149/how-to-compact-virtualboxs-vdi-file-size
@@ -75,7 +80,7 @@ There is Virtualization Station update (see snapshot from release note), which a
 - Select *Controller **VirtIO*** in Virtual Station guest VM configuration's "*Storage*" tab
 - ***Enable Space Reclaim*** in Virtual Station guest VM configuration's "*Storage*" tab
 - Enable ***Virtio-serial*** in Virtual Station guest VM configuration’s “_Others_” tab for qemu-guest-agent work properly
-- Guest OS installation: Use **LVM** for virtual machine's disk partitioning
+- Guest OS installation: Use **LVM** for virtual machine's disk partitioning (for guest OS "**df**" command to show properly "_Available_" column value)
 
 Virtualization Station 4.2.0.281
 2026/08/28
@@ -89,6 +94,16 @@ Virtualization Station 4.2.0.281
 
 ## PROXMOX Images (QEMU/KVM) 
 Under Construction......
+
+When create new virtual machine
+
+- System tab: SCSI Controller - VirtIO SCSI Single
+- System tab: Qemu Agent - Enable
+- Disks tab: Cache - Default (no cache)
+- Disks tab: Storage - local-lvm (or other **LVM**)
+- Disks tab: Discard - Enable
+- Disks tab: SSD Emulation - Enable
+- Use LVM partioning for VM disk image (OS install)
 
 PROXMOX default installation use host machine's local ("dedicated") LVM-thin partition for VM virtual disk images.
 - [Proxmox VE Storage: Thin vs Thick Provisioning Explained | Saturn ME](https://www.saturnme.com/proxmox-ve-storage-thin-vs-thick-provisioning-explained/)
