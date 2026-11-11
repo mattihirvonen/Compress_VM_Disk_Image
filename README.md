@@ -72,6 +72,7 @@ Look like current status is there is no practical way to deflate / shrink afterw
 There is Virtualization Station update (see snapshot from release note), which allow new virtual machines to take advantage of disk space reclamation. Feature use require
 - Quest OS support TRIM/UNMAP (most of modern quest OS support this feature: Ubuntu, Debian, Windows 11, ...)
 - Host OS installation (QNAP's file system): Use **LVM partitioning** for virtual machine disk image file storage
+- Select *Controller **VirtIO*** in Virtual Station guest VM configuration's "*Storage*" tab
 - ***Enable Space Reclaim*** in Virtual Station guest VM configuration's "*Storage*" tab
 - Enable ***Virtio-serial*** in Virtual Station guest VM configuration’s “_Others_” tab for qemu-guest-agent work properly
 - Guest OS installation: Use **LVM** for virtual machine's disk partitioning
